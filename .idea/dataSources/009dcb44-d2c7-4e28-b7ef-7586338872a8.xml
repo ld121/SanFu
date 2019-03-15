@@ -40,7 +40,7 @@
     <schema id="13" parent="1" name="sanfu">
       <Current>1</Current>
       <Visible>1</Visible>
-      <Collation>latin1_swedish_ci</Collation>
+      <Collation>utf8_general_ci</Collation>
     </schema>
     <schema id="14" parent="1" name="sys">
       <Collation>utf8_general_ci</Collation>
@@ -933,5 +933,38 @@
       <Charset>utf8mb4</Charset>
       <DefaultForCharset>0</DefaultForCharset>
     </collation>
+    <table id="237" parent="13" name="django_migrations">
+      <Engine>InnoDB</Engine>
+    </table>
+    <column id="238" parent="237" name="id">
+      <Position>1</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="239" parent="237" name="app">
+      <Position>2</Position>
+      <DataType>varchar(255)|0</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="240" parent="237" name="name">
+      <Position>3</Position>
+      <DataType>varchar(255)|0</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="241" parent="237" name="applied">
+      <Position>4</Position>
+      <DataType>datetime(6)|0</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <key id="242" parent="237" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
   </database-model>
 </dataSource>

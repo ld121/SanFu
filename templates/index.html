@@ -38,10 +38,10 @@
 					<ul>
 						<li><a href="#" style="color:red;margin-right:5px"></a>您好，欢迎光临sanfu！</li>
 						<li>
-							<a href="http://10.2.166.37:8000/login.html">登录</a>
+							<a href="{% url 'sanfu:login' %}">登录</a>
 						</li>
 						<li>
-							<a href="http://10.2.166.37:8000/regiest.html">免费注册</a>
+							<a href="{% url 'sanfu:regiest' %}">免费注册</a>
 						</li>
 						<li>
 							<a href="#" style="background: url({% static 'img/index/nzzz3.jpg' %}) no-repeat;background-position: left;padding-left: 15px;">收藏三福</a>
@@ -94,7 +94,7 @@
 						<a href="#">女装</a>
 					</li>
 					<li style="position: relative;">
-						<a href="http://10.2.166.37:8000/goodsList.html">新品</a><img src="{% static 'img/index/new.png'%}" style="position: absolute;left:30px;top: -10px;"></li>
+						<a href="{ }">新品</a><img src="{% static 'img/index/new.png'%}" style="position: absolute;left:30px;top: -10px;"></li>
 					<li>
 						<a href="#">热销</a>
 					</li>
@@ -517,20 +517,40 @@
 				<!--
         	主context开始
         -->
-				<div class="banner">
-					<ul class="bannerBtn">
-						<li class="bannerBtnHover"></li>
-						<li></li>
-						<li></li>
-					</ul>
-					<ul class="bannerImg">
-                        <li>
-                            <a>
-                                <img src="{% static 'img/index/banner.jpg"' %}">
-                            </a>
-                        </li>
-					</ul>
-				</div>
+{#				<div class="banner">#}
+{#					<ul class="bannerBtn">#}
+{#						<li class="bannerBtnHover"></li>#}
+{#						<li></li>#}
+{#						<li></li>#}
+{#					</ul>#}
+{#					<ul class="bannerImg">#}
+{#                        <li>#}
+{#                            <a>#}
+{#                                <img id="fffff" src="{% static 'img/index/banner.jpg"' %}">#}
+{#                            </a>#}
+{#                        </li>#}
+{#					</ul>#}
+{#				</div>#}
+{#        轮播图#}
+                <div class="swiper-container banner">
+                    <div class="swiper-wrapper">
+                        {% for wheel in wheels %}
+                            <div class="swiper-slide bannerImg">
+                                <img src="{% static wheel.img %}">
+                            </div>
+                        {% endfor %}
+
+                    </div>
+                    <!-- 如果需要分页器 -->
+                    <div class="swiper-pagination"></div>
+
+                    <!-- 如果需要导航按钮 -->
+{#                    <div class="swiper-button-prev"></div>#}
+{#                    <div class="swiper-button-next"></div>#}
+
+                    <!-- 如果需要滚动条 -->
+{#                    <div class="swiper-scrollbar"></div>#}
+                </div>
 
 				<div class="contextMain">
 					<div class="contextTitle">
@@ -539,28 +559,87 @@
 							<a href="#">更多</a>
 						</div>
 					</div>
-					<div class="contextBody"></div>
+					<div class="contextBody">
+                        {% for goodnew in goodnews %}
+                        <div>
+                            <img src="{% static goodnew.img %}">
+                            <div class='originalPrice'>
+                                <p>
+                                    <a href='#'>{{ goodnew.name }}</a>
+                                </p>
+                                <p>原价￥<span>{{ goodnew.original }}</span></p>
+                            </div>
+                            <div class='presentPrice' style='background: url({% static 'img/index/20160912012045_171.png' %}) no-repeat -3px -5px;'>{{ goodnew.present }}</div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
 					<div class="contextTitle">
 						<div class="ctDiv">热销单品</div>
 						<div class="ctMore">
 							<a href="#">更多</a>
 						</div>
 					</div>
-					<div class="contextBody"></div>
+					<div class="contextBody">
+                        <div class='cbbanner'><a><img src="{% static bannerurl1.img %}"></a></div>
+                        {% for goodhot in goodhots %}
+                        <div>
+                            <img src="{% static goodhot.img %}">
+                            <div class='originalPrice'>
+                                <p>
+                                    <a href='#'>{{ goodhot.name }}</a>
+                                </p>
+                                <p>原价￥<span>{{ goodhot.original }}</span></p>
+                            </div>
+                            <div class='presentPrice' style='background: url({% static 'img/index/20160912094224_174.png' %}) no-repeat -3px -5px;'>{{ goodhot.present }}</div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
 					<div class="contextTitle">
 						<div class="ctDiv">男装</div>
 						<div class="ctMore">
 							<a href="#">更多</a>
 						</div>
 					</div>
-					<div class="contextBody"></div>
+					<div class="contextBody">
+                        <div class='cbbanner'><a><img src="{% static bannerurl2.img %}"></a></div>
+                        {% for goodman in goodmans %}
+                        <div>
+                            <img src="{% static goodman.img %}">
+                            <div class='originalPrice'>
+                                <p>
+                                    <a href='#'>{{ goodman.name }}</a>
+                                </p>
+                                <p>原价￥<span>{{ goodman.original }}</span></p>
+                            </div>
+                            <div class='presentPrice' style='background: url({% static 'img/index/20160912094224_174.png' %}) no-repeat -3px -5px;'>{{ goodman.present }}</div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
 					<div class="contextTitle">
 						<div class="ctDiv">女装</div>
 						<div class="ctMore">
 							<a href="#">更多</a>
 						</div>
 					</div>
-					<div class="contextBody"></div>
+					<div class="contextBody">
+                        <div class='cbbanner'><a><img src="{% static bannerurl3.img %}"></a></div>
+                        {% for goodwoman in goodwomans %}
+                        <div>
+                            <img src="{% static goodwoman.img %}">
+                            <div class='originalPrice'>
+                                <p>
+                                    <a href='#'>{{ goodwoman.name }}</a>
+                                </p>
+                                <p>原价￥<span>{{ goodwoman.original }}</span></p>
+                            </div>
+                            <div class='presentPrice' style='background: url({% static 'img/index/20160912094224_174.png' %}) no-repeat -3px -5px;'>{{ goodwoman.present }}</div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
 				</div>
 				<!--
 			主footer开始
@@ -686,6 +765,19 @@
 			主footer结束
         -->
 
+        <script>
+          var mySwiper = new Swiper ('.swiper-container', {
+              pagination: '.swiper-pagination',
+              {#nextButton: '.swiper-button-next',#}
+              {#prevButton: '.swiper-button-prev',#}
+              paginationClickable: true,
+              spaceBetween: 30,
+              centeredSlides: true,
+              autoplay: 2500,
+              autoplayDisableOnInteraction: false,
+              loop:true
+          })
+        </script>
     </body>
 
 </html>
