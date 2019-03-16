@@ -572,16 +572,18 @@
 					</div>
 					<div class="contextBody">
                         {% for goodnew in goodnews %}
-                        <div>
-                            <img src="{% static goodnew.img %}">
-                            <div class='originalPrice'>
-                                <p>
-                                    <a href="{% url 'sanfu:goodsMsg' goodnew.dealerid %}">{{ goodnew.name }}</a>
-                                </p>
-                                <p>原价￥<span>{{ goodnew.original }}</span></p>
+                        <a href="{% url 'sanfu:goodsMsg' goodnew.dealerid%}">
+                            <div>
+                                <img src="{% static goodnew.img %}">
+                                <div class='originalPrice'>
+                                    <p>
+                                        {{ goodnew.name }}
+                                    </p>
+                                    <p>原价￥<span>{{ goodnew.original }}</span></p>
+                                </div>
+                                <div class='presentPrice' style='background: url({% static 'img/index/20160912012045_171.png' %}) no-repeat -3px -5px;'>{{ goodnew.present }}</div>
                             </div>
-                            <div class='presentPrice' style='background: url({% static 'img/index/20160912012045_171.png' %}) no-repeat -3px -5px;'>{{ goodnew.present }}</div>
-                        </div>
+                        </a>
                         {% endfor %}
                     </div>
 
@@ -594,16 +596,18 @@
 					<div class="contextBody">
                         <div class='cbbanner'><a><img src="{% static bannerurl1.img %}"></a></div>
                         {% for goodhot in goodhots %}
-                        <div>
-                            <img src="{% static goodhot.img %}">
-                            <div class='originalPrice'>
-                                <p>
-                                    <a href="{% url 'sanfu:goodsMsg' goodnew.dealerid %}">{{ goodhot.name }}</a>
-                                </p>
-                                <p>原价￥<span>{{ goodhot.original }}</span></p>
-                            </div>
-                            <div class='presentPrice' style='background: url({% static 'img/index/20160912094224_174.png' %}) no-repeat -3px -5px;'>{{ goodhot.present }}</div>
-                        </div>
+                            <a href="{% url 'sanfu:goodsMsg' goodhot.dealerid%}">
+                                <div>
+                                    <img src="{% static goodhot.img %}">
+                                    <div class='originalPrice'>
+                                        <p>
+                                            {{ goodhot.name }}
+                                        </p>
+                                        <p>原价￥<span>{{ goodhot.original }}</span></p>
+                                    </div>
+                                    <div class='presentPrice' style='background: url({% static 'img/index/20160912094224_174.png' %}) no-repeat -3px -5px;'>{{ goodhot.present }}</div>
+                                </div>
+                            </a>
                         {% endfor %}
                     </div>
 
@@ -620,7 +624,7 @@
                             <img src="{% static goodman.img %}">
                             <div class='originalPrice'>
                                 <p>
-                                    <a href="{% url 'sanfu:goodsMsg' goodnew.dealerid %}">{{ goodman.name }}</a>
+                                    <a href="#">{{ goodman.name }}</a>
                                 </p>
                                 <p>原价￥<span>{{ goodman.original }}</span></p>
                             </div>
@@ -642,7 +646,7 @@
                             <img src="{% static goodwoman.img %}">
                             <div class='originalPrice'>
                                 <p>
-                                    <a href="{% url 'sanfu:goodsMsg' goodnew.dealerid %}">{{ goodwoman.name }}</a>
+                                    <a href="#">{{ goodwoman.name }}</a>
                                 </p>
                                 <p>原价￥<span>{{ goodwoman.original }}</span></p>
                             </div>

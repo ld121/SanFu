@@ -25,8 +25,6 @@
 
 	<body>
 
-goodsMsg.js:3:2
-
 		<!--
         	主head
         -->
@@ -523,29 +521,29 @@ goodsMsg.js:3:2
 				<div class="gmContextMain">
 					<div class="gmcmTitle">
 						<div class="carouselFigure">
-							<div id="minImg">
-								<span class="icon iconfont"></span>
+							<div id="minImg" style="background: url({% static good.img %}) no-repeat;">
+								<span class="icon iconfont"></span>
 								<div id="minArea"></div>
 							</div>
-							<div id="maxArea" style="left: 574.5px; top: 180px;">
+							<div id="maxArea" style="left: 574.5px; top: 180px;background: url({% static good.img %});">
 								<div id="maxImg"></div>
 							</div>
 							<div id="cfsmall">
 								<ul>
-									<li style="background: url({% static 'img/goods/11.bmp' %});	background-size: 100% 100%;"></li>
-									<li style="background: url({% static 'img/goods/12.bmp' %});	background-size: 100% 100%;"></li>
-									<li style="background: url({% static 'img/goods/13.bmp' %});	background-size: 100% 100%;"></li>
-									<li style="background: url({% static 'img/goods/14.bmp' %});	background-size: 100% 100%;"></li>
-									<li style="background: url({% static 'img/goods/15.bmp' %});	background-size: 100% 100%;"></li>
-									<li style="background: url({% static 'img/goods/16.bmp' %});	background-size: 100% 100%;"></li>
-									<li style="background: url({% static 'img/goods/17.bmp' %});	background-size: 100% 100%;"></li>
+									<li style="background: url({% static good.img %});	background-size: 100% 100%;"></li>
+									<li style="background: url({% static good.img %});	background-size: 100% 100%;"></li>
+									<li style="background: url({% static good.img %});	background-size: 100% 100%;"></li>
+									<li style="background: url({% static good.img %});	background-size: 100% 100%;"></li>
+									<li style="background: url({% static good.img %});	background-size: 100% 100%;"></li>
+									<li style="background: url({% static good.img %});	background-size: 100% 100%;"></li>
+									<li style="background: url({% static good.img %});	background-size: 100% 100%;"></li>
 								</ul>
 							</div>
 						</div>
 
 						<div class="gmcmMsg">
 							<div class="gmname">
-								<p>三福2016女冬撞色字母印花针织衫 圆领宽松套头毛衣</p>
+								<p>{{ good.name }}</p>
 							</div>
 							<div class="gmid">
 								<label>商品编号：362309</label>
@@ -557,26 +555,29 @@ goodsMsg.js:3:2
 								<label>活动</label><div><span>实付满99元包邮</span><span>首次购买第一件9折</span><span>秋季新品2件9折</span><span>男女新品首周1件95折</span><span>秋冬新品1件95折</span></div>
 							</div>
 							<div class="gmprice">
-								<label>售价</label><span>￥ 139.00</span>
+								<label>售价</label><span>￥ {{ good.original }}</span>
 							</div>
 							<div class="gmvip">
-								<label>VIP</label><i>￥125.10</i><span>会员积分满300享9折价</span>
+								<label>VIP</label><i>￥{{ good.present }}</i><span>会员积分满300享9折价</span>
 							</div>
 							<div class="gmchoice">
 								<div class="gmcolor">
 									<label>颜色：</label>
 									<ul>
-										<li style="background: url({% static 'img/goods/11.bmp' %});	background-size: 100% 100%;" colorstyle="深黑色"></li>
-										<li style="background: url({% static 'img/goods/16.bmp' %});	background-size: 100% 100%;" colorstyle="深蓝色"></li>
-										<li style="background: url({% static 'img/goods/17.bmp' %});	background-size: 100% 100%;" colorstyle="酒红色"></li>
-										<li style="background: url({% static 'img/goods/18.bmp' %});	background-size: 100% 100%;" colorstyle="浅灰色"></li>
+										<li style="background: url({% static good.img %});	background-size: 100% 100%;" colorstyle="深黑色"></li>
+										<li style="background: url({% static good.img %});	background-size: 100% 100%;" colorstyle="深蓝色"></li>
+										<li style="background: url({% static good.img %});	background-size: 100% 100%;" colorstyle="酒红色"></li>
+										<li style="background: url({% static good.img %});	background-size: 100% 100%;" colorstyle="浅灰色"></li>
 									</ul>
 								</div>
 								<div class="gmsize">
 									<label>尺寸：</label><span>S</span><span>M</span>
 								</div>
 								<div class="gmcount">
-									<label>我要买：</label><button id="sub">-</button><input type="text" value="1"><button id="add">+</button>
+									<label>我要买：</label>
+                                    <button id="sub">-</button>
+                                    <input type="text" value="1">
+                                    <button id="add">+</button>
 								</div>
 								<div class="gmmsg">
 									<label>已选择：</label><label></label><span></span>

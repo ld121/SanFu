@@ -150,3 +150,19 @@
 // 	}
 //
 // })
+$(function(){
+   $("#sub").click(function() {
+		var num = $(".gmcount input").val();
+		if(num <= 1) {
+			num = 1
+		} else {
+			num--;
+		}
+		$(".gmcount input").val(num);
+   })
+   $("#add").click(function() {
+        var num = $(".gmcount input").val();
+        num++;
+        $(".gmcount input").val(num);
+   })
+})

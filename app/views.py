@@ -12,7 +12,7 @@ from django.shortcuts import render, redirect
 from app.models import Wheel, BannerUrl, Goods, User
 
 #首页
-def index(request,):
+def index(request):
     wheels = Wheel.objects.all()
     bannerurl1 = BannerUrl.objects.get(pk=1)
     bannerurl2 = BannerUrl.objects.get(pk=2)
@@ -22,7 +22,7 @@ def index(request,):
     goodmans = Goods.objects.filter(childname='男装')
     goodwomans = Goods.objects.filter(childname='女装')
 
-    response = {
+    response_data = {
         'wheels': wheels,
         'bannerurl1': bannerurl1,
         'bannerurl2': bannerurl2,
@@ -38,10 +38,10 @@ def index(request,):
     token = request.session.get('token')
     userid = cache.get(token)
     if userid:
-        user = User.objects.get(pk= userid)
-        response['user'] = user
+        user = User.objects.get(pk=userid)
+        response_data['user'] = user
 
-    return render(request,'index.html',response)
+    return render(request,'index.html',response_data)
 
 #购物车
 def cart(request):
@@ -130,7 +130,12 @@ def goodsList(request):
 #商品详情
 def goodsMsg(request,dealerid):
 
-    return render(request,'goodsMsg.html')
+    good = Goods.objects.get(dealerid=dealerid)
+
+    response_data={
+        'good':good
+    }
+    return render(request,'goodsMsg.html',response_data)
 
 #账号验证
 def checkemail(request):

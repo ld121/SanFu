@@ -40,3 +40,13 @@ class User(models.Model):
     name = models.CharField(max_length=100)
     class Meta:
         db_table = 'sf_user'
+
+class Car(models.Model):
+    #商品数量
+
+    #是否选择
+
+    #是否删除
+
+    class Meta:
+        db_table = 'sf_car'
