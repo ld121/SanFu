@@ -43,10 +43,6 @@ def index(request):
 
     return render(request,'index.html',response_data)
 
-#购物车
-def cart(request):
-    return render(request,'cart.html')
-
 #解析密码
 def generate_password(param):
     md5 = hashlib.md5()
@@ -153,4 +149,10 @@ def checkemail(request):
         }
     return JsonResponse(response_data)
 
+#购物车
+def cart(request):
+    #拿到token
+    token = request.session.get('token')
+    #根据token在缓存中找到对应用户
 
+    return render(request,'cart.html')

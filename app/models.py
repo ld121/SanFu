@@ -42,11 +42,15 @@ class User(models.Model):
         db_table = 'sf_user'
 
 class Car(models.Model):
+    # 用户信息
+    user = models.ForeignKey(User)
+    # 商品信息
+    goods = models.ForeignKey(Goods)
     #商品数量
-
+    number = models.IntegerField()
     #是否选择
-
+    isselect = models.BooleanField(default=True)
     #是否删除
-
+    isdelete = models.BooleanField(default=False)
     class Meta:
         db_table = 'sf_car'

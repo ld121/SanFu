@@ -151,6 +151,7 @@
 //
 // })
 $(function(){
+   //删减商品数量
    $("#sub").click(function() {
 		var num = $(".gmcount input").val();
 		if(num <= 1) {
@@ -160,9 +161,23 @@ $(function(){
 		}
 		$(".gmcount input").val(num);
    })
+   //增加商品数量
    $("#add").click(function() {
         var num = $(".gmcount input").val();
         num++;
         $(".gmcount input").val(num);
    })
+   //加入购物车
+   $('#addcat').click(function(){
+       numb = $(".gmcount input").val();
+       //判断是否已登录
+
+   })
+   //立即购买
+   $('#payMoney') .click(function(){
+       numb = $(".gmcount input").val();
+       //判断是否已登录
+       // 判断此时的购物车的商品数量，如果为0，则加1，否则不变
+   })
+
 })
