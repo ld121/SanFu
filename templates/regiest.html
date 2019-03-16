@@ -33,7 +33,7 @@
 					<ul>
 						<li><a href="#" style="color:red;margin-right:5px"></a>您好，欢迎光临sanfu！</li>
 						<li>
-							<a href="http://10.2.166.37:8000/login.html">登录</a>
+							<a href="http://10.2.166.37:8000/login.html">{{ user.name | default:'未登录' }}</a>
 						</li>
 						<li>
 							<a href="http://10.2.166.37:8000/regiest.html">免费注册</a>
@@ -74,16 +74,34 @@
         			</div>
                     <form action="{% url 'sanfu:regiest' %}" method="post">
                          {% csrf_token %}
-        			    <div><label>账号</label><input id="name" type="text" placeholder="邮箱/用户名/手机号" name="username"><i></i></div>
-        			    <div><label>密码</label><input id="pwd" type="password" placeholder="" name="password"><i></i></div>
-        			    <div><label>确认密码</label><input id="repwd" type="password" placeholder=""><i></i></div>
-        			    <div><label>验证码</label><input id="txtidcode" type="text" placeholder=""><span id="idcode"><div id="ehong-code" class="ehong-idcode-val ehong-idcode-val3" href="#" onblur="return false" onfocus="return false" oncontextmenu="return false" onclick="$.idcode.setCode()"><font color="#18975F">w</font><font color="#BC3087">J</font><font color="#18975F">e</font><font color="#E69A2A">X</font></div><span id="ehong-code-tip-ck" class="ehong-code-val-tip" onclick="$.idcode.setCode()"></span></span></div>
-        			    <div><input id="protocol" type="checkbox" name="protocol"><label style="width: 250px;font-size: 12px;">我已阅读并同意<a href="#">《三福用户注册协议》</a></label></div>
-        			    <div><input id="register" type="button" value="注册"></div>
+                        <div class="checkname">
+                            <label>昵称</label>
+                            <input id="uername" type="text" placeholder="请输入昵称" name="uername">
+                            <i></i>
+                        </div>
+        			    <div class="checkemail">
+                            <label>账号</label>
+                            <input id="email" type="text" placeholder="邮箱/用户名/手机号" name="email">
+                            <i></i>
+                        </div>
+        			    <div class="checkpwd">
+                            <label>密码</label>
+                            <input id="pwd" type="password" placeholder="请输入5~16位密码" name="password">
+                            <i></i>
+                        </div>
+        			    <div class="repwd">
+                            <label>确认密码</label>
+                            <input id="repwd" type="password" placeholder="">
+                            <i></i>
+                        </div>
+
+
+        			    <div ><input id="protocol" type="checkbox" name="protocol"><label style="width: 250px;font-size: 12px;">我已阅读并同意<a href="#">《三福用户注册协议》</a></label></div>
+        			    <div ><input id="register" type="button" value="注册"></div>
                     </form>
                 </div>
         		<div class="regAd">
-        			<label>已有三福账号？&nbsp;</label><a href="http://10.2.166.37:8000/login.html">登录</a>
+        			<label>已有三福账号？&nbsp;</label><a href="{% url 'sanfu:login' %}">登录</a>
         		</div>
         	</div>
         </div>

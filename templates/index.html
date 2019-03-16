@@ -38,10 +38,19 @@
 					<ul>
 						<li><a href="#" style="color:red;margin-right:5px"></a>您好，欢迎光临sanfu！</li>
 						<li>
-							<a href="{% url 'sanfu:login' %}">登录</a>
+                            {% if user %}
+							    <a href="#">{{ user.name }}</a>
+                            {% else %}
+                                <a class="login-i">登录</a>
+                            {% endif %}
 						</li>
 						<li>
-							<a href="{% url 'sanfu:regiest' %}">免费注册</a>
+                            {% if user %}
+							    <a href="{% url 'sanfu:logout' %}">退出</a>
+                            {% else %}
+                                <a class="register-li">免费注册</a>
+                            {% endif %}
+
 						</li>
 						<li>
 							<a href="#" style="background: url({% static 'img/index/nzzz3.jpg' %}) no-repeat;background-position: left;padding-left: 15px;">收藏三福</a>
@@ -54,6 +63,8 @@
 				</div>
 			</div>
 		</div>
+
+
 		<div class="header">
 			<div class="hearderMain">
 				<ul>
@@ -565,7 +576,7 @@
                             <img src="{% static goodnew.img %}">
                             <div class='originalPrice'>
                                 <p>
-                                    <a href='#'>{{ goodnew.name }}</a>
+                                    <a href="{% url 'sanfu:goodsMsg' goodnew.dealerid %}">{{ goodnew.name }}</a>
                                 </p>
                                 <p>原价￥<span>{{ goodnew.original }}</span></p>
                             </div>
@@ -587,7 +598,7 @@
                             <img src="{% static goodhot.img %}">
                             <div class='originalPrice'>
                                 <p>
-                                    <a href='#'>{{ goodhot.name }}</a>
+                                    <a href="{% url 'sanfu:goodsMsg' goodnew.dealerid %}">{{ goodhot.name }}</a>
                                 </p>
                                 <p>原价￥<span>{{ goodhot.original }}</span></p>
                             </div>
@@ -609,7 +620,7 @@
                             <img src="{% static goodman.img %}">
                             <div class='originalPrice'>
                                 <p>
-                                    <a href='#'>{{ goodman.name }}</a>
+                                    <a href="{% url 'sanfu:goodsMsg' goodnew.dealerid %}">{{ goodman.name }}</a>
                                 </p>
                                 <p>原价￥<span>{{ goodman.original }}</span></p>
                             </div>
@@ -631,7 +642,7 @@
                             <img src="{% static goodwoman.img %}">
                             <div class='originalPrice'>
                                 <p>
-                                    <a href='#'>{{ goodwoman.name }}</a>
+                                    <a href="{% url 'sanfu:goodsMsg' goodnew.dealerid %}">{{ goodwoman.name }}</a>
                                 </p>
                                 <p>原价￥<span>{{ goodwoman.original }}</span></p>
                             </div>
@@ -779,5 +790,4 @@
           })
         </script>
     </body>
-
 </html>

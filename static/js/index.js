@@ -89,3 +89,19 @@
 //
 //
 // })
+$(function () {
+    //记录哪个页面进入其他页面
+    $('.login-i').click(function () {
+        // 设置cookie
+        $.cookie('back', 'index', {expires: 3, path: '/'})
+
+        window.open('/login/', '_self')
+    })
+
+	$('.register-li').click(function () {
+        // 设置cookie
+        $.cookie('back', 'regiest', {expires: 3, path: '/'})
+
+        window.open('/regiest/', '_self')
+    })
+})
