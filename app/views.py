@@ -9,7 +9,8 @@ from django.shortcuts import render, redirect
 # Create your views here.
 
 
-from app.models import Wheel, BannerUrl, Goods, User
+from app.models import Wheel, BannerUrl, Goods, User, Car, Order, OrderGoods
+
 
 #首页
 def index(request):
@@ -49,20 +50,31 @@ def generate_password(param):
     md5.update(param.encode('utf-8'))
     return md5.hexdigest()
 
+#生成token
+def generate_token():
+    temp = str(time.time()) + str(random.random())
+    md5 = hashlib.md5()
+    md5.update(temp.encode('utf-8'))
+    return md5.hexdigest()
+
 #登录
 def login(request):
     if request.method == 'GET':
         return render(request, 'login.html')
     elif request.method == 'POST':
         #获取账号密码
-        email = request.POST.get('username')
-        password = request.POST.get('password')
+        email = request.POST.get('loginName')
+        password = generate_password(request.POST.get('loginPwd'))
         #记录哪个页面进来的
         back = request.COOKIES.get('back')
         users = User.objects.filter(email=email)
+
+        response_data={
+            'user':None
+        }
         if users.exists():
             user = users.first()
-            if user.password == generate_password(password):
+            if user.password == password:
                 # 更新token
                 token = generate_token()
 
@@ -71,7 +83,9 @@ def login(request):
 
                 # 传递客户端
                 request.session['token'] = token
-                return redirect('sanfu:'+back)
+
+
+                return redirect('sanfu:index')
             else:
                 return render(request, 'login.html', context={'ps_err': '密码错误'})
         else:
@@ -85,13 +99,6 @@ def logout(request):
 
     return redirect('sanfu:index')
 
-#生成token
-def generate_token():
-    temp = str(time.time()) + str(random.random())
-    md5 = hashlib.md5()
-    md5.update(temp.encode('utf-8'))
-    return md5.hexdigest()
-
 #注册
 def regiest(request):
     if request.method == 'GET':
@@ -100,7 +107,7 @@ def regiest(request):
         #获取数据
         name = request.POST.get('uername')
         email = request.POST.get('email')
-        password =request.POST.get('password')
+        password = generate_password(request.POST.get('password'))
         #储存数据
         user = User()
         user.name = name
@@ -151,8 +158,199 @@ def checkemail(request):
 
 #购物车
 def cart(request):
-    #拿到token
-    token = request.session.get('token')
-    #根据token在缓存中找到对应用户
+    carts = Car.objects.filter(isdelete=False)
+    cselect = Car.objects.filter(isselect=True)
 
-    return render(request,'cart.html')
+    cartid = request.GET.get('cartid')
+
+
+    if cartid:
+        mycar = Car.objects.get(pk=cartid)
+
+
+        status = request.GET.get('status')
+
+        if status == '1':
+            mycar.number =  mycar.number+ 1
+
+            mycar.save()
+
+
+        elif status == '-1':
+            if mycar.number != 1:
+                mycar.number = mycar.number - 1
+                mycar.save()
+
+            else:
+                mycar.number = 0
+                mycar.isdelete = True
+                mycar.save()
+
+
+    data = {
+       'carts':carts
+    }
+
+    return render(request,'cart.html',data)
+
+def addcart(request):
+    # 拿到token
+    token = request.session.get('token')
+    # 根据token在缓存中找到对应用户
+    if token:
+        #获取对应用户
+        userid = cache.get(token)
+        user = User.objects.get(pk=userid)
+        #获取对应商品信息
+        goodsid = request.GET.get('goodsid')
+        goods = Goods.objects.get(pk=goodsid)
+        # 获取商品数量
+        numb = request.GET.get('numb')
+        # 获取选择的是购物车还是立即购买
+        shopway = request.GET.get('shopway')
+        #判断商品是否已经存在购物车中
+        carts = Car.objects.filter(user=user).filter(goods=goods)
+
+        if carts.exists():
+            if shopway:
+                cart = carts.first()
+                cart.number = cart.number + int(numb)
+                cart.isdelete = False
+                cart.save()
+
+        else:
+            cart = Car()
+            cart.user = user
+            cart.goods = goods
+            cart.number = numb
+            cart.save()
+        response_data = {
+            'status':1,
+            'msg':'添加购物车成功'
+        }
+        return JsonResponse(response_data)
+
+    else:
+        response_data = {
+            'status': -1,
+            'msg': '请登录再操作'
+        }
+        return JsonResponse(response_data)
+
+# 全选
+def chekall(request):
+    status = request.GET.get('status')
+    cartid = request.GET.get('checkone')
+    # 确定用户
+    print(cartid)
+    token = request.session.get('token')
+    userid = cache.get(token)
+
+    carts = Car.objects.filter(user_id=userid)
+    # 确定商品选择情况
+
+    allcar = carts.filter(isdelete=0)
+    onegood = Car.objects.get(pk = cartid)
+    if status == '1':
+
+        allprice = 0
+        for car in allcar:
+            car.isselect=1
+            car.save()
+            numb = car.number
+            price = car.goods.original
+            allprice = allprice+numb*price
+        print(allprice)
+        response_data = {
+            'numb': 1,
+            'allprice':allprice
+        }
+        return JsonResponse(response_data)
+    elif status == '2':
+
+        for car in allcar:
+            car.isselect=0
+            car.save()
+        response_data = {
+            'numb': 2,
+        }
+        return JsonResponse(response_data)
+    elif status == '3':
+        onegood.isselect = 1
+        onegood.save()
+        cars = carts.filter(isselect=1)
+        allprice = 0
+        for car in cars:
+            numb = car.number
+            price = car.goods.original
+            allprice = allprice + numb * price
+
+        response_data = {
+            'numb': 3,
+            'allprice':allprice
+        }
+        return JsonResponse(response_data)
+    elif status == '4':
+
+        onegood.isselect = 0
+        onegood.save()
+        cars = carts.filter(isselect=1)
+        allprice = 0
+        for car in cars:
+            numb = car.number
+            price = car.goods.original
+            allprice = allprice + numb * price
+
+        response_data = {
+            'numb': 4,
+            'allprice': allprice
+        }
+        return JsonResponse(response_data)
+
+#生成订单号
+def generate_identifier():
+    temp = str(time.time()) + str(random.randrange(1000, 10000))
+    return temp
+
+#订单
+def order(request):
+    token = request.session.get('token')
+    userid = cache.get(token)
+    user = User.objects.get(pk=userid)
+    cart = Car.objects.filter(user_id=userid)
+
+    # 订单
+    order = Order()
+    order.user = user
+    order.identifier = generate_identifier()
+    order.save()
+
+    # 订单商品(购物车中选中)
+    carts = cart.filter(isselect=1)
+    for cart in carts:
+        orderGoods = OrderGoods()
+        orderGoods.order = order
+        orderGoods.goods = cart.goods
+        orderGoods.number = cart.number
+        orderGoods.save()
+
+        # 购物车中移除
+        cart.delete()
+
+    return render(request, 'order.html', context={'order': order})
+
+def orderlist(request):
+    token = request.session.get('token')
+    userid = cache.get(token)
+    user = User.objects.get(pk=userid)
+
+    orders = user.order_set.all()
+
+    # status_list = ['未付款', '待发货', '待收货', '待评价', '已评价']
+
+    return render(request, 'orderlist.html', context={'orders':orders})
+
+def orderdetail(request, identifier):
+    order = Order.objects.filter(identifier=identifier).first()
+
+    return render(request, 'order.html', context={'order': order})

@@ -100,15 +100,16 @@
 	color: red;
 }
 #mycart td>button{
+	margin: 0;
 	width: 20px;
 	height: 20px;
+	line-height: 5px;
 }
-#mycart td>button{
-	width: 20px;
-	height: 20px;
-}
+
+
 #mycart td>input[type='text']{
 	text-align: center;
 	width: 50px;
 	height: 20px;
 }
+

@@ -170,14 +170,46 @@ $(function(){
    //加入购物车
    $('#addcat').click(function(){
        numb = $(".gmcount input").val();
-       //判断是否已登录
+
+       goodid  = $('#addcat').attr('data-goodid')
+
+       data = {
+           'goodsid':goodid,
+           'numb':numb,
+           'shopway':1
+       }
+       $.get('/addcart/',data,function(response){
+           //判断是否已登录
+           console.log('aaa')
+            if(response.status == -1){
+                window.open('/login/','_self')
+            }else if (response.status == 1){
+                window.open('/cart/','_self')
+            }
+       })
 
    })
    //立即购买
    $('#payMoney') .click(function(){
        numb = $(".gmcount input").val();
-       //判断是否已登录
-       // 判断此时的购物车的商品数量，如果为0，则加1，否则不变
+
+       goodid  = $('#payMoney').attr('data-goodid')
+
+       data = {
+           'goodsid':goodid,
+           'numb':numb,
+           'shopway':0
+       }
+       $.get('/addcart/',data,function(response){
+           //判断是否已登录
+           console.log('bbb')
+            if(response.status == -1){
+                window.open('/login/','_self')
+            }else if (response.status == 1){
+                window.open('/cart/','_self')
+            }
+       })
+
    })
 
 })

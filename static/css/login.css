@@ -43,7 +43,7 @@
 	width:468px;
 	height: 264px;
 	overflow: hidden;
-	
+	display: none;
 	
 }
 .qrLogin img{
@@ -100,7 +100,7 @@
 .formLogin{
 	width:468px;
 	height: auto;
-	display: none;
+	display: block;
 	overflow: hidden;
 }
 .formLogin ul{

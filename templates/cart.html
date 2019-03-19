@@ -68,16 +68,30 @@
         	<div class="mainbody">
         		<table id="mycart">
         			<tbody><tr>
-        				<th><input type="checkbox" id="checkall">全选</th>
+        				<th><input type="checkbox" id="checkall"  checked="checked">全选</th>
         				<th>图片</th>
         				<th>商品信息</th>
         				<th>促销价</th>
         				<th>数量</th>
         				<th>小计</th>
         				<th>操作</th>
-        			</tr>
-
-        		<tr><td colspan="7">购物车中没有商品记录！</td></tr></tbody></table>
+        			</tr></tbody>
+                    {% for cart in carts %}
+                    <tr class ="shoping">
+                        <td><input data-checkid="{{ cart.id}}" type='checkbox' class="childcheck" checked="checked"/></td>
+                        <td><img  src="{% static cart.goods.img %}"/></td>
+                        <td><span>{{ cart.goods.name }}</span></td>
+                        <td class="tdp"><span class="price">{{ cart.goods.original }}</span><span>元</span></td>
+                        <td class="tdp"><button class='sub' data-cartid="{{ cart.id}}">-</button>
+                            <input class="numb" type='text' value='{{ cart.number}}'/>
+                            <span></span>
+                            <button class='add' data-cartid="{{ cart.id}}">+</button></td>
+                        <td class="tdp"><span>￥</span><span class="mprice"></span><span>元</span></td>
+                        <td><a class='delethis'>删除商品</a></td>
+                    </tr>
+                    {% endfor %}
+        		    <tr id="noneshop"><td colspan="7">购物车中没有商品记录！</td></tr></tbody>
+                </table>
         		<div class="cartDele">
         			<button id="deleteGoods"><i class="icon iconfont"></i>删除选中的商品</button><span>商品数量总计：<b>0</b></span>
         		</div>
@@ -85,7 +99,7 @@
         			<span>商品总价(不含运费)：￥<b>0.00</b>元</span>
         		</div>
         		<div class="cartBtn">
-        			<input type="button" value="继续购物" style="background: #ababab;" id="turnBackList"><input type="button" value="去结算" style="background: #d90349;">
+        			<input type="button" value="继续购物" style="background: #ababab;" id="turnBackList"><input type="button" value="去结算" style="background: #d90349;" id="payoder">
         		</div>
         	</div>
         </div>
