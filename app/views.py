@@ -7,8 +7,10 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 
 # Create your views here.
+from django.views.decorators.csrf import csrf_exempt
+from urllib.parse import parse_qs
 
-
+from app.alipay import alipay
 from app.models import Wheel, BannerUrl, Goods, User, Car, Order, OrderGoods
 
 
@@ -158,8 +160,12 @@ def checkemail(request):
 
 #购物车
 def cart(request):
-    carts = Car.objects.filter(isdelete=False)
-    cselect = Car.objects.filter(isselect=True)
+    # 拿到token
+    token = request.session.get('token')
+    userid = cache.get(token)
+    thecar = Car.objects.filter(user_id=userid)
+    carts = thecar.filter(isdelete=0)
+    cselect = thecar.filter(isselect=1)
 
     cartid = request.GET.get('cartid')
 
@@ -250,7 +256,7 @@ def chekall(request):
     # 确定商品选择情况
 
     allcar = carts.filter(isdelete=0)
-    onegood = Car.objects.get(pk = cartid)
+
     if status == '1':
 
         allprice = 0
@@ -276,6 +282,7 @@ def chekall(request):
         }
         return JsonResponse(response_data)
     elif status == '3':
+        onegood = Car.objects.get(pk=cartid)
         onegood.isselect = 1
         onegood.save()
         cars = carts.filter(isselect=1)
@@ -291,7 +298,7 @@ def chekall(request):
         }
         return JsonResponse(response_data)
     elif status == '4':
-
+        onegood = Car.objects.get(pk=cartid)
         onegood.isselect = 0
         onegood.save()
         cars = carts.filter(isselect=1)
@@ -354,3 +361,60 @@ def orderdetail(request, identifier):
     order = Order.objects.filter(identifier=identifier).first()
 
     return render(request, 'order.html', context={'order': order})
+
+def returnurl(request):
+    return redirect('sanfu:index')
+
+
+# 支付宝异步回调是post请求
+@csrf_exempt
+def appnotifyurl(request):
+    if request.method == 'POST':
+        # 获取到参数
+        body_str = request.body.decode('utf-8')
+
+        # 通过parse_qs函数
+        post_data = parse_qs(body_str)
+
+        # 转换为字典
+        post_dic = {}
+        for k,v in post_data.items():
+            post_dic[k] = v[0]
+
+        # 获取订单号
+        out_trade_no = post_dic['out_trade_no']
+
+        # 更新状态
+        Order.objects.filter(identifier=out_trade_no).update(status=1)
+
+    return JsonResponse({'msg':'success'})
+
+
+def pay(request):
+    # print(request.GET.get('orderid'))
+
+    orderid = request.GET.get('orderid')
+    order = Order.objects.get(pk=orderid)
+
+    sum = 0
+    for orderGoods in order.ordergoods_set.all():
+        sum += orderGoods.goods.original * orderGoods.number
+
+    # 支付地址信息
+    data = alipay.direct_pay(
+        subject='MackBookPro [256G 8G 灰色]', # 显示标题
+        out_trade_no=order.identifier,    # 订单号
+        total_amount=str(sum),   # 支付金额
+        return_url='http://39.98.191.182/returnurl/'
+    )
+
+    # 支付地址
+    alipay_url = 'https://openapi.alipaydev.com/gateway.do?{data}'.format(data=data)
+
+    response_data = {
+        'msg': '调用支付接口',
+        'alipayurl': alipay_url,
+        'status': 1
+    }
+
+    return JsonResponse(response_data)

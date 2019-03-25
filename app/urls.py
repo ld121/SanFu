@@ -17,5 +17,10 @@ urlpatterns = [
     url(r'^addcart/$',views.addcart,name='addcart' ),#添加购物车
     url(r'^chekall/$',views.chekall,name='chekall'),
     url(r'^order/$',views.order,name='order'),
+    url(r'orderlist/$', views.orderlist, name='orderlist'),
+
+    url(r'^returnurl/$', views.returnurl, name='returnurl'),    # 支付成功后，客户端的显示
+    url(r'^appnotifyurl/$', views.appnotifyurl, name='appnotifyurl'), # 支付成功后，订单的处理
+    url(r'^pay/$', views.pay, name='pay'),  # 支付
 
 ]
